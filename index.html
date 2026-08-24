@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>English Exam Pack · Mr.Zaafouri Abdelmalek</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        html,body{width:100%;height:100%;overflow:hidden;background:#0a0e27;font-family:'Baloo 2','Nunito',sans-serif;color:#fff}
+        #app{width:100%;height:100%;display:flex;flex-direction:column;background:#0a0e27}
+        #header{background:#1a1f4e;padding:14px 16px 10px;border-bottom:1px solid rgba(255,255,255,.15);flex-shrink:0}
+        #header-top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+        #avatar{width:44px;height:44px;background:linear-gradient(145deg,#fbbf24,#f97316);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+        #header-text h1{font-size:16px;font-weight:800;line-height:1.2}
+        #header-text p{font-size:11px;color:#93c5fd;font-weight:600}
+        #chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+        #chips::-webkit-scrollbar{display:none}
+        .chip{background:rgba(255,255,255,.1);padding:6px 14px;border-radius:30px;font-weight:700;font-size:11px;color:#93c5fd;border:1px solid rgba(255,255,255,.2);cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0}
+        .chip.active{background:#3b82f6;color:#fff;border-color:#3b82f6}
+        #content{flex:1;overflow-y:auto;padding:16px;-webkit-overflow-scrolling:touch}
+        .section-title{font-size:15px;font-weight:800;margin:14px 0 10px}
+        .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+        .card{background:#1a1f4e;border-radius:16px;padding:16px 12px;border:1px solid rgba(255,255,255,.15);cursor:pointer;text-align:center;font-family:inherit;transition:.2s}
+        .card:active{transform:scale(.95);background:#2a2f6e}
+        .card-icon{font-size:36px;margin-bottom:6px}
+        .card-title{font-weight:800;font-size:12px}
+        .card-sub{font-weight:600;font-size:10px;color:#93c5fd;margin-top:2px}
+        .btn{display:flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:50px;padding:14px 20px;font-weight:800;font-size:13px;cursor:pointer;font-family:inherit;width:100%;transition:.2s}
+        .btn:active{transform:scale(.95)}
+        .btn-gold{background:#fbbf24;color:#0a0e27}
+        .btn-green{background:#10b981;color:#fff}
+        .btn-purple{background:#8b5cf6;color:#fff}
+        .exam-box{background:#1a1f4e;border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,.15)}
+        .exam-box h4{font-size:13px;margin-bottom:8px}
+        .exam-box p{font-size:12px;color:#93c5fd;line-height:1.7;margin-bottom:5px}
+        .passage{background:rgba(255,255,255,.05);border-radius:10px;padding:12px;margin-bottom:10px;line-height:1.8;color:#c4d4f0}
+        .exam-box table{width:100%;border-collapse:collapse;margin-top:6px}
+        .exam-box th{color:#fff;border-bottom:2px solid rgba(255,255,255,.3);padding:6px;text-align:left;font-size:11px}
+        .exam-box td{color:#93c5fd;border-bottom:1px solid rgba(255,255,255,.15);padding:6px;font-size:11px}
+        .blank{display:inline-block;min-width:80px;border-bottom:2px dashed #3b82f6;padding:0 6px;color:#93c5fd}
+        .blank-cell{color:#3b82f6;font-style:italic}
+        textarea{width:100%;background:#0a0e27;border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:10px;color:#fff;font-family:inherit;font-size:12px;min-height:80px;resize:vertical}
+        #bottom-nav{background:#1a1f4e;border-top:1px solid rgba(255,255,255,.15);padding:8px 12px 12px;display:flex;justify-content:space-around;flex-shrink:0}
+        .nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:22px;color:#64748b;background:none;border:none;cursor:pointer;font-family:inherit}
+        .nav-item span{font-size:9px;font-weight:700;color:#94a3b8}
+        .nav-item.active{color:#fbbf24}
+        .nav-item.active span{color:#fbbf24}
+        #toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#2a2f6e;color:#fff;padding:10px 18px;border-radius:30px;font-weight:700;font-size:12px;z-index:100;opacity:0;transition:.3s;pointer-events:none;white-space:nowrap;border:1px solid rgba(255,255,255,.2)}
+        #toast.show{opacity:1}
+        #pdf-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;color:#1a1a2e;z-index:9999;overflow-y:auto;padding:30px;font-family:Arial,sans-serif;line-height:1.8;display:none}
+        #pdf-overlay.visible{display:block}
+        #pdf-overlay h1,#pdf-overlay h2,#pdf-overlay h3{color:#1a1a2e;margin-bottom:10px}
+        #pdf-overlay p{color:#333;margin-bottom:8px;font-size:13px}
+        #pdf-overlay table{width:100%;border-collapse:collapse;margin:10px 0}
+        #pdf-overlay th,#pdf-overlay td{border:1px solid #ddd;padding:8px;text-align:left;font-size:12px}
+        #pdf-overlay th{background:#1e3a8a;color:#fff}
+        #pdf-close{position:fixed;top:20px;right:20px;background:#ef4444;color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;z-index:10000;display:none}
+        #pdf-close.visible{display:block}
+    </style>
+</head>
+<body>
+<div id="app">
+    <div id="header">
+        <div id="header-top">
+            <div id="avatar">🧑‍🚀</div>
+            <div id="header-text">
+                <h1>Mr.Zaafouri Abdelmalek 🚀</h1>
+                <p>English Exam Pack · 30 Lessons</p>
+            </div>
+        </div>
+        <div id="chips">
+            <button class="chip active" onclick="filterModule('all', this)">🔤 All</button>
+            <button class="chip" onclick="filterModule(1, this)">M1</button>
+            <button class="chip" onclick="filterModule(2, this)">M2</button>
+            <button class="chip" onclick="filterModule(3, this)">M3</button>
+            <button class="chip" onclick="filterModule(4, this)">M4</button>
+            <button class="chip" onclick="filterModule(5, this)">M5</button>
+            <button class="chip" onclick="filterModule(6, this)">M6</button>
+        </div>
+    </div>
+    <div id="content"></div>
+    <div id="bottom-nav">
+        <button class="nav-item active" onclick="goHome()"><span style="font-size:22px;">🏠</span><span>Home</span></button>
+        <button class="nav-item" onclick="goExam()"><span style="font-size:22px;">📝</span><span>Exams</span></button>
+        <button class="nav-item" onclick="downloadAllPDF()"><span style="font-size:22px;">📄</span><span>PDF</span></button>
+        <button class="nav-item" onclick="shareAll()"><span style="font-size:22px;">📤</span><span>Share</span></button>
+    </div>
+</div>
+
+<div id="pdf-overlay"></div>
+<button id="pdf-close" onclick="closePDF()">✕</button>
+<div id="toast">🚀 Let's learn!</div>
+
+<script src="exam-data.js"></script>
+<script>
+    const modules = [
+        {id:1,title:'Module 1',subtitle:'All About Me',icon:'🧑‍🚀',lessons:['Introducing Myself','My Family','My Hobbies','My Favourite Things']},
+        {id:2,title:'Module 2',subtitle:'My Day',icon:'⏰',lessons:['My Morning Routine','What Time Is It?','My School Day','Weekend Plans']},
+        {id:3,title:'Module 3',subtitle:'In the Playground',icon:'🎠',lessons:['In the Playground',"Let's Play Together",'Which Ride?',"It's Your Turn",'Safety First']},
+        {id:4,title:'Module 4',subtitle:'Birthday Party',icon:'🎂',lessons:['Inviting Friends','Decorating the House','Preparing the Cake',"Let's Have a Party",'Cleaning Up']},
+        {id:5,title:'Module 5',subtitle:'Food and Drinks',icon:'🍔',lessons:['Food and Drinks','Preparing Meals','Eating Together','At the Restaurant','Going on a Picnic','Food Across the World']},
+        {id:6,title:'Module 6',subtitle:'Means of Transport',icon:'🚗',lessons:['Means of Transport','At the Train Station','At the Airport','Travel Behaviour','Road Safety','Car Free Day']}
+    ];
+
+    let currentKey = null;
+
+    function renderHome(filterId) {
+        const content = document.getElementById('content');
+        content.innerHTML = '';
+        const title = document.createElement('div');
+        title.className = 'section-title';
+        title.textContent = '📚 Exam Packs (30 Lessons)';
+        content.appendChild(title);
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+        modules.forEach(mod => {
+            if (filterId !== 'all' && mod.id !== filterId) return;
+            mod.lessons.forEach((lesson, idx) => {
+                const card = document.createElement('button');
+                card.className = 'card';
+                card.innerHTML = `<div class="card-icon">${mod.icon}</div><div class="card-title">${mod.title} · L${idx + 1}</div><div class="card-sub">${lesson}</div>`;
+                card.onclick = () => openExam(mod.id, idx);
+                grid.appendChild(card);
+            });
+        });
+        content.appendChild(grid);
+        const actionTitle = document.createElement('div');
+        actionTitle.className = 'section-title';
+        actionTitle.textContent = '📝 Quick Actions';
+        content.appendChild(actionTitle);
+        const actions = document.createElement('div');
+        actions.style.cssText = 'display:flex;flex-direction:column;gap:10px;margin-bottom:20px;';
+        actions.innerHTML = '<button class="btn btn-gold" onclick="downloadAllPDF()">📄 Download All PDF</button><button class="btn btn-purple" onclick="shareAll()">📤 Share All</button>';
+        content.appendChild(actions);
+    }
+
+    function filterModule(id, chip) {
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        renderHome(id);
+    }
+
+    function openExam(modId, idx) {
+        currentKey = `${modId}-${idx + 1}`;
+        const exam = examData[currentKey];
+        if (!exam) return;
+        const content = document.getElementById('content');
+        content.innerHTML = '';
+        const header = document.createElement('div');
+        header.style.cssText = 'text-align:center;padding:14px;';
+        header.innerHTML = `<div style="font-size:55px;">${exam.icon}</div><h2 style="font-size:17px;margin-top:6px;">${exam.title}</h2><p style="color:#93c5fd;font-size:11px;margin-top:4px;">${exam.grammar} · Writing: ${exam.writingType}</p><p style="color:#fbbf24;font-size:10px;margin-top:4px;">Prepared by Mr.Zaafouri Abdelmalek</p>`;
+        content.appendChild(header);
+
+        const readTitle = document.createElement('div');
+        readTitle.className = 'section-title';
+        readTitle.textContent = '📖 Reading Comprehension';
+        content.appendChild(readTitle);
+        const readBox = document.createElement('div');
+        readBox.className = 'exam-box';
+        readBox.innerHTML = `
+            <div class="passage">${exam.passage}</div>
+            <h4>A. What is the text about?</h4>
+            <p>a. ${exam.mainIdea[0]}</p><p>b. ${exam.mainIdea[1]}</p><p>c. ${exam.mainIdea[2]}</p>
+            <p><strong>Answer:</strong> <span class="blank"></span></p>
+            <h4 style="margin-top:12px;">B. Complete the table</h4>
+            <table><tr><th>Item</th><th>Details</th></tr>
+            ${exam.tableRows.map(row => `<tr><td>${row}</td><td class="blank-cell">______________</td></tr>`).join('')}
+            </table>
+            <h4 style="margin-top:12px;">C. Correct the false statements</h4>
+            ${exam.falseStatements.map((fs, i) => `<p>${i + 1}. <strong>False:</strong> ${fs}</p><p><strong>Correction:</strong> <span class="blank"></span></p>`).join('')}
+            <h4 style="margin-top:12px;">D. Reference questions</h4>
+            ${exam.references.map((ref, i) => `<p>${i + 1}. ${ref}</p><p><strong>Answer:</strong> <span class="blank"></span></p>`).join('')}
+            <h4 style="margin-top:12px;">E. Personal opinion</h4>
+            <p>${exam.opinion}</p>
+            <textarea placeholder="Write your opinion here..."></textarea>
+        `;
+        content.appendChild(readBox);
+
+        const langTitle = document.createElement('div');
+        langTitle.className = 'section-title';
+        langTitle.textContent = '✏️ Language Practice';
+        content.appendChild(langTitle);
+
+        const langBox1 = document.createElement('div');
+        langBox1.className = 'exam-box';
+        langBox1.innerHTML = `
+            <h4>A. Fill in the gaps with words from the list</h4>
+            <p style="color:#fbbf24;font-size:11px;margin-bottom:8px;">Word bank: ${exam.language.gapFillWords.join(', ')}</p>
+            <p style="line-height:2.2;">${exam.language.gapFill}</p>
+            <h4 style="margin-top:15px;">B. Fill in the gaps with the correct tense or form</h4>
+            <p style="line-height:2.2;">${exam.language.tense}</p>
+        `;
+        content.appendChild(langBox1);
+
+        const langBox2 = document.createElement('div');
+        langBox2.className = 'exam-box';
+        langBox2.innerHTML = `
+            <h4>C. Reorder the sentence parts to make a coherent paragraph</h4>
+            ${exam.language.reorder.map((part, i) => `<p>${i + 1}. ${part}</p>`).join('')}
+            <p style="margin-top:8px;"><strong>Correct order:</strong> <span class="blank"></span> → <span class="blank"></span> → <span class="blank"></span> → <span class="blank"></span> → <span class="blank"></span></p>
+        `;
+        content.appendChild(langBox2);
+
+        const writeTitle = document.createElement('div');
+        writeTitle.className = 'section-title';
+        writeTitle.textContent = `✍️ Writing Task (${exam.writingType})`;
+        content.appendChild(writeTitle);
+        const writeBox = document.createElement('div');
+        writeBox.className = 'exam-box';
+        writeBox.innerHTML = `
+            <h4>Writing Prompt</h4>
+            <p style="color:#c4d4f0;font-size:13px;line-height:1.8;margin-bottom:10px;">${exam.writingPrompt}</p>
+            <textarea placeholder="Write your ${exam.writingType.toLowerCase()} here..." style="min-height:150px;"></textarea>
+        `;
+        content.appendChild(writeBox);
+
+        const actions = document.createElement('div');
+        actions.style.cssText = 'display:flex;gap:10px;margin:12px 0 24px;';
+        actions.innerHTML = '<button class="btn btn-gold" style="flex:1;" onclick="openPDF()">📄 PDF</button><button class="btn btn-green" style="flex:1;" onclick="shareExam()">📤 Share</button>';
+        content.appendChild(actions);
+    }
+
+    function goHome() {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.nav-item')[0].classList.add('active');
+        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.chip')[0].classList.add('active');
+        renderHome('all');
+    }
+
+    function goExam() {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.nav-item')[1].classList.add('active');
+        renderHome('all');
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2000);
+    }
+
+    function shareExam() {
+        const exam = examData[currentKey];
+        if (!exam) return;
+        const text = `${exam.title} · Mr.Zaafouri Abdelmalek`;
+        if (navigator.share) navigator.share({ title: exam.title, text }).catch(() => {});
+        else navigator.clipboard.writeText(text).then(() => showToast('📋 Copied!'));
+    }
+
+    function shareAll() {
+        const text = 'English Exam Packs (30 Lessons) · Mr.Zaafouri Abdelmalek';
+        if (navigator.share) navigator.share({ title: 'English Exam Packs', text }).catch(() => {});
+        else navigator.clipboard.writeText(text).then(() => showToast('📋 Copied!'));
+    }
+
+    function openPDF() {
+        const exam = examData[currentKey];
+        if (!exam) return;
+        const overlay = document.getElementById('pdf-overlay');
+        overlay.innerHTML = `
+            <div style="text-align:center; margin-bottom:20px;">
+                <div style="font-size:50px;">${exam.icon}</div>
+                <h1 style="font-size:22px; margin-top:8px;">${exam.title}</h1>
+                <p style="color:#555;">Grammar: ${exam.grammar} | Writing: ${exam.writingType}</p>
+                <p style="color:#1e3a8a; font-weight:bold; margin-top:5px;">Prepared by Mr.Zaafouri Abdelmalek</p>
+                <hr style="margin:15px 0;">
+                <p><strong>Student Name:</strong> ______________ <strong>Date:</strong> ______________</p>
+            </div>
+            <h2>📖 READING COMPREHENSION</h2>
+            <p style="line-height:1.8;">${exam.passage}</p>
+            <h3>A. What is the text about?</h3>
+            <p>a. ${exam.mainIdea[0]}</p>
+            <p>b. ${exam.mainIdea[1]}</p>
+            <p>c. ${exam.mainIdea[2]}</p>
+            <p><strong>Answer:</strong> ______________</p>
+            <h3>B. Complete the table</h3>
+            <table style="width:100%; border-collapse:collapse; margin:10px 0;">
+                <tr><th style="border:1px solid #ddd; padding:8px;">Item</th><th style="border:1px solid #ddd; padding:8px;">Details</th></tr>
+                ${exam.tableRows.map(row => `<tr><td style="border:1px solid #ddd; padding:8px;">${row}</td><td style="border:1px solid #ddd; padding:8px;">______________</td></tr>`).join('')}
+            </table>
+            <h3>C. Correct the false statements</h3>
+            ${exam.falseStatements.map((fs, i) => `<p>${i + 1}. <strong>False:</strong> ${fs}</p><p><strong>Correction:</strong> ______________</p>`).join('')}
+            <h3>D. Reference questions</h3>
+            ${exam.references.map((ref, i) => `<p>${i + 1}. ${ref}</p><p><strong>Answer:</strong> ______________</p>`).join('')}
+            <h3>E. Personal opinion</h3>
+            <p>${exam.opinion}</p>
+            <p>______________</p>
+            <h2>✏️ LANGUAGE PRACTICE</h2>
+            <h3>A. Fill in the gaps</h3>
+            <p><strong>Word bank:</strong> ${exam.language.gapFillWords.join(', ')}</p>
+            <p>${exam.language.gapFill}</p>
+            <h3>B. Correct tense</h3>
+            <p>${exam.language.tense}</p>
+            <h3>C. Reorder sentences</h3>
+            ${exam.language.reorder.map((part, i) => `<p>${i + 1}. ${part}</p>`).join('')}
+            <p><strong>Correct order:</strong> ______ → ______ → ______ → ______ → ______</p>
+            <h2>✍️ WRITING TASK (${exam.writingType.toUpperCase()})</h2>
+            <p><strong>Prompt:</strong> ${exam.writingPrompt}</p>
+            <p>______________</p>
+            <p>______________</p>
+            <p>______________</p>
+            <div style="margin-top:40px; text-align:center; color:#888;">
+                <p>Prepared by Mr.Zaafouri Abdelmalek</p>
+                <p>English Exam Pack · Modules 1-6</p>
+            </div>
+        `;
+        overlay.classList.add('visible');
+        document.getElementById('pdf-close').classList.add('visible');
+    }
+
+    function closePDF() {
+        document.getElementById('pdf-overlay').classList.remove('visible');
+        document.getElementById('pdf-close').classList.remove('visible');
+    }
+
+    function downloadAllPDF() {
+        const overlay = document.getElementById('pdf-overlay');
+        let html = `
+            <div style="text-align:center; margin-bottom:30px;">
+                <h1 style="font-size:24px;">English Exam Pack</h1>
+                <p style="color:#555;">30 Lessons · Modules 1-6</p>
+                <p><strong>Prepared by:</strong> Mr.Zaafouri Abdelmalek</p>
+                <hr style="margin:20px 0;">
+            </div>
+            <h2>Table of Contents</h2>
+        `;
+        modules.forEach(mod => {
+            html += `<h3 style="margin-top:20px;">${mod.icon} ${mod.title}: ${mod.subtitle}</h3><ul>`;
+            mod.lessons.forEach((lesson, idx) => {
+                html += `<li>Lesson ${idx + 1}: ${lesson}</li>`;
+            });
+            html += '</ul>';
+        });
+        html += `
+            <div style="margin-top:40px; text-align:center; color:#888;">
+                <p>Prepared by Mr.Zaafouri Abdelmalek</p>
+                <p>© ${new Date().getFullYear()} English Exam Pack</p>
+            </div>
+        `;
+        overlay.innerHTML = html;
+        overlay.classList.add('visible');
+        document.getElementById('pdf-close').classList.add('visible');
+    }
+
+    renderHome('all');
+</script>
+</body>
+</html>
